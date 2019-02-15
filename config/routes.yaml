@@ -4,3 +4,11 @@
 #index:
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
+
+add_task:
+    path: /add/task
+    controller: App\Controller\AddTaskController::index
+
+index:
+  path: /
+  controller: App\Controller\indexController::index
