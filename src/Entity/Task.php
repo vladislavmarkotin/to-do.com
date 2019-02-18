@@ -31,41 +31,41 @@ class Task
      */
     private $status = 0;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name)
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription($description)
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus()
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus($status)
     {
         $this->status = $status;
 

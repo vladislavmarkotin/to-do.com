@@ -11,4 +11,4 @@ add_task:
 
 index:
   path: /
-  controller: App\Controller\indexController::index
+  controller: App\Controller\IndexController::index
