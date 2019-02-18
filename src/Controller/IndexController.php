@@ -51,21 +51,26 @@ class IndexController extends Controller
             $task_name = $request->get("task_name");
             $task_desc = $request->get('task_desc');
             //
-            /* Добавляем все в базу */
-            $em = $this->getDoctrine()->getManager();
+            if ($task_name && $task_desc){
+                /* Добавляем все в базу */
+                $em = $this->getDoctrine()->getManager();
 
-            $task = new Task();
-            $task->setName($task_name);
+                $task = new Task();
+                $task->setName($task_name);
 
-            $task->setDescription($task_desc);
+                $task->setDescription($task_desc);
 
-            $em->persist($task);
-            // на самом деле выполнить запросы (т.е. запрос INSERT)
-            $em->flush();
+                $task->setStatus(0);
 
-            //
-            return new JsonResponse( json_encode(array('task' => $task_name,'task_desc' => $task_desc ),
-                JSON_UNESCAPED_UNICODE) );
+                $em->persist($task);
+                // на самом деле выполнить запросы (т.е. запрос INSERT)
+                $em->flush();
+
+                //
+                return new JsonResponse( json_encode(array('task' => $task_name,'task_desc' => $task_desc, 'status'=> 0 ),
+                    JSON_UNESCAPED_UNICODE) );
+            }
+
         }
 
 
