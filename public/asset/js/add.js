@@ -14,6 +14,7 @@ function addRequest(){
         $.post( "add", { task_name: formData.getName(), task_desc: formData.getDesc() }).done(function(response) {
             var answer = JSON.parse(response);
             console.log(answer);
+            $("#tasks").append("<td>" + answer.id + "</td>");
             $("#tasks").append("<td>" + answer.task + "</td>");
             $("#tasks").append("<td>" + answer.task_desc + "</td>");
             $("#tasks").append("<td>" + answer.status + "</td>");

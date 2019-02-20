@@ -56,6 +56,7 @@ class IndexController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
                 $task = new Task();
+
                 $task->setName($task_name);
 
                 $task->setDescription($task_desc);
@@ -66,8 +67,10 @@ class IndexController extends Controller
                 // на самом деле выполнить запросы (т.е. запрос INSERT)
                 $em->flush();
 
+                $task_id = $task->getId();
                 //
-                return new JsonResponse( json_encode(array('task' => $task_name,'task_desc' => $task_desc, 'status'=> 0 ),
+                return new JsonResponse( json_encode(array('id' => $task_id,'task' => $task_name,
+                        'task_desc' => $task_desc, 'status'=> 0 ),
                     JSON_UNESCAPED_UNICODE) );
             }
 
@@ -75,5 +78,45 @@ class IndexController extends Controller
 
 
         return $this->render('add_task/index.html.twig');
+    }
+
+    /**
+     * @Route("/edit", methods={"POST"}, name="edit")
+     */
+    public function edit(Request $request){
+
+        if ($request->isXMLHttpRequest()) {
+
+            $task_id = $request->get('task_id');
+            $task_name = $request->get("task_name");
+            $task_desc = $request->get('task_desc');
+            //
+            if ($task_name && $task_desc){
+                /* Добавляем все в базу */
+                $em = $this->getDoctrine()->getManager();
+
+                $task = new Task();
+
+                $task->setName($task_name);
+
+                $task->setDescription($task_desc);
+
+                $task->setStatus(0);
+
+                $em->persist($task);
+                // на самом деле выполнить запросы (т.е. запрос INSERT)
+                $em->flush();
+
+
+                //
+
+            }
+            return new JsonResponse( json_encode(array('id' => $task_id,'task' => $task_name,
+                    'task_desc' => $task_desc, 'status'=> 0 ),
+                JSON_UNESCAPED_UNICODE) );
+
+        }
+        return new JsonResponse();
+
     }
 }
