@@ -119,4 +119,32 @@ class IndexController extends Controller
         return new JsonResponse();
 
     }
+
+    /**
+     * @Route("/del", methods={"POST"}, name="del")
+     */
+    public function deleteTask(Request $request){
+
+        if ($request->isXMLHttpRequest()) {
+
+            $task_id = $request->get("id");
+            //
+            if ($task_id){
+
+                $repository = $this->getDoctrine()->getRepository(Task::class);
+
+                $em = $this->getDoctrine()->getManager();
+
+                $task = $repository->find($task_id);
+
+
+                $em->remove($task);
+                $em->flush();
+
+                //
+                return new JsonResponse( );
+            }
+        }
+        return new JsonResponse( );
+    }
 }

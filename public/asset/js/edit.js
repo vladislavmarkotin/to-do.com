@@ -14,7 +14,8 @@ $( document ).ready(function() {
         function makeRequest(formData){
 
 
-            $.post( "edit", { id: formData.getId(),task_name: formData.getName(), task_desc: formData.getDesc() }).done(function(response) {
+            $.post( "edit", { id: formData.getId(),task_name: formData.getName(), task_desc: formData.getDesc() })
+                .done(function(response) {
                 var answer = JSON.parse(response);
                 console.log(answer);
 
@@ -59,17 +60,12 @@ $( document ).ready(function() {
         var task_description = $(this).parent().parent().children().eq(2).html();
         var task_status = $(this).parent().parent().children().eq(3).html();
         /* works */
-        console.log(id);
-        console.log(task_name);
-        console.log(task_description);
-        console.log(task_status);
+
         /* Insert data in form */
         $("#edit_task-id").val(id);
         $('#edit_task-name').val(task_name);
         $("#edit_task-description").val(task_description);
         $("#edit_status [value="+task_status +"]").attr("selected", "selected");
-
-
 
     }));
 
