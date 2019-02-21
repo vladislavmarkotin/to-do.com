@@ -38,6 +38,8 @@ $(document).ready(function (){
         var task_description = $(this).parent().parent().children().eq(2).html();
         var task_status = $(this).parent().parent().children().eq(3).html();
 
+        $(this).parent().parent().children().hide();
+
         var delete_request = new deleteRequest();
 
         if (id)

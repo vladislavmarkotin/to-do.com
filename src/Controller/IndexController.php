@@ -87,9 +87,9 @@ class IndexController extends Controller
 
         if ($request->isXMLHttpRequest()) {
 
-            $id = $request->get('id');
-
-            $entityManager = $this->getDoctrine()->getManager();
+            $id = $request->get('task_name');
+            echo $id;
+            /*$entityManager = $this->getDoctrine()->getManager();
             $task = $entityManager->getRepository(Task::class)->find($id);
 
             $new_name = $request->get('task_name');
@@ -110,9 +110,10 @@ class IndexController extends Controller
 
             return new JsonResponse( json_encode(array('id' => $id,'task' => $new_name,
                     'task_desc' => $new_description, 'status'=> $new_status ),
-                JSON_UNESCAPED_UNICODE) );
+                JSON_UNESCAPED_UNICODE) );*/
 
         }
+        die();
         return new JsonResponse();
 
     }
