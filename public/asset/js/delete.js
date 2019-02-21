@@ -32,13 +32,16 @@ $(document).ready(function (){
 
     $('button:submit').bind("click", function (){
 
+        console.log("delete");
         var id = $(this).parent().parent().children().eq(0).html();
         var task_name = $(this).parent().parent().children().eq(1).html();
         var task_description = $(this).parent().parent().children().eq(2).html();
         var task_status = $(this).parent().parent().children().eq(3).html();
 
         var delete_request = new deleteRequest();
-        delete_request.init(id);
+
+        if (id)
+            delete_request.init(id);
     });
 
 

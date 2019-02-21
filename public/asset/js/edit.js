@@ -1,66 +1,52 @@
-$( document ).ready(function() {
-    $(function() {
+function editRequest(){
+    var id;
+    var task = '';
+    var task_desc = '';
+    var status;
 
-        $('button:submit').bind("click", false);
-
-    });
-
-
-    function editRequest(){
-        var id;
-        var task = '';
-        var task_desc = '';
-
-        function makeRequest(formData){
+    function makeRequest(formData){
 
 
-            $.post( "edit", { id: formData.getId(),task_name: formData.getName(), task_desc: formData.getDesc() })
-                .done(function(response) {
+        $.post( "/edit", { id: formData['task_id'],task_name: formData['task_name'],
+            task_desc: formData['task_desc'], status: formData['task_status'] })
+            .done(function(response) {
                 var answer = JSON.parse(response);
-                console.log(answer);
-
+                console.log(answer.id);
             });
-        }
-
-        this.init = function(task_id, task_name, task_description){
-            //alert(task_description);
-
-            id = task_id;
-            task = task_name;
-            task_desc = task_description;
-
-            var formData = {
-                task_id: id,
-                task_name: task,
-                task_desc: task_desc,
-
-                getId: function (){
-                    return this.id;
-                },
-
-                getName: function () {
-                    return this.task_name;
-                },
-
-                getDesc: function (){
-                    return this.task_desc;
-                }
-            };
-
-            if ( (task !== '') && (task_desc !== '') ){
-                makeRequest(formData);
-            }
-        };
     }
 
-    $.each($("td button").click(function (elem){
+    this.init = function(task_id, task_name, task_description, task_status){
+        //alert(task_description);
+
+        id = task_id;
+        task = task_name;
+        task_desc = task_description;
+        status = task_status;
+
+        var formData = {
+            task_id: id,
+            task_name: task,
+            task_desc: task_desc,
+            task_status: status
+
+        };
+
+        if ( (task !== '') && (task_desc !== '') ){
+            makeRequest(formData);
+        }
+    };
+}
+
+$( document ).ready(function() {
+
+    $.each($("td button:button").click(function (elem){
         //alert("Yeaaaa!"); //работает !!!
         var id = $(this).parent().parent().children().eq(0).html();
         var task_name = $(this).parent().parent().children().eq(1).html();
         var task_description = $(this).parent().parent().children().eq(2).html();
         var task_status = $(this).parent().parent().children().eq(3).html();
         /* works */
-
+        console.log(id);
         /* Insert data in form */
         $("#edit_task-id").val(id);
         $('#edit_task-name').val(task_name);
@@ -68,6 +54,24 @@ $( document ).ready(function() {
         $("#edit_status [value="+task_status +"]").attr("selected", "selected");
 
     }));
+
+
+
+});
+
+$("#edit").click(function (event){
+
+    var id = $("#edit_task-id").val();
+    var task_name = $('#edit_task-name').val();
+    var task_description = $("#edit_task-description").val();
+    var task_status = $("#sel1 option:selected").text();
+
+    //console.log(task_status);
+
+    var edit_request = new editRequest();
+    edit_request.init(id, task_name, task_description, task_status);
+    // Stop form from submitting normally
+    event.preventDefault();
 
 });
 

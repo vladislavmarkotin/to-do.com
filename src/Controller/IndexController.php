@@ -87,32 +87,29 @@ class IndexController extends Controller
 
         if ($request->isXMLHttpRequest()) {
 
-            $task_id = $request->get('task_id');
-            $task_name = $request->get("task_name");
-            $task_desc = $request->get('task_desc');
-            //
-            if ($task_name && $task_desc){
-                /* Добавляем все в базу */
-                $em = $this->getDoctrine()->getManager();
+            $id = $request->get('id');
 
-                $task = new Task();
+            $entityManager = $this->getDoctrine()->getManager();
+            $task = $entityManager->getRepository(Task::class)->find($id);
 
-                $task->setName($task_name);
+            $new_name = $request->get('task_name');
+            $new_description = $request->get('task_desc');
+            $new_status = $request->get('status');
 
-                $task->setDescription($task_desc);
-
-                $task->setStatus(0);
-
-                $em->persist($task);
-                // на самом деле выполнить запросы (т.е. запрос INSERT)
-                $em->flush();
-
-
-                //
-
+            if (!$task) {
+                throw $this->createNotFoundException(
+                    'No product found for id '.$id
+                );
             }
-            return new JsonResponse( json_encode(array('id' => $task_id,'task' => $task_name,
-                    'task_desc' => $task_desc, 'status'=> 0 ),
+
+            $task->setName($new_name);
+            $task->setDescription($new_description);
+            $task->setStatus($new_status);
+            $entityManager->flush();
+
+
+            return new JsonResponse( json_encode(array('id' => $id,'task' => $new_name,
+                    'task_desc' => $new_description, 'status'=> $new_status ),
                 JSON_UNESCAPED_UNICODE) );
 
         }
