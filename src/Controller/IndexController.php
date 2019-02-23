@@ -18,7 +18,14 @@ use Doctrine\DBAL\DriverManager as DriverManager;
 
 class IndexController extends Controller
 {
-    //use Symfony\Component\Form\FormTypeInterface;
+
+    private function checkStrings($arg){
+            if ($arg){
+                $arg = trim($arg);
+            }
+            return $arg;
+    }
+
     /**
      * @Route("/index", name="index")
      */
@@ -96,6 +103,10 @@ class IndexController extends Controller
         $new_status = $request->get('edit_sel');
 
 
+        $new_name = $this->checkStrings($new_name);
+        $new_description = $this->checkStrings($new_description);
+        //$new_status = $this->checkStrings($new_description);
+
         $task->setName($new_name);
         $task->setDescription($new_description);
         $task->setStatus($new_status);
@@ -109,7 +120,7 @@ class IndexController extends Controller
                 'No task found for id '.$id
             );
         }
-        
+
 
         return $this->redirectToRoute('index');
 
