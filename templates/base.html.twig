@@ -8,6 +8,12 @@
 
     </head>
     <body>
+    <div id="error" class="alert alert-danger" role="alert">
+        Запрос не прошел!
+    </div>
+    <div id="success" class="alert-success" role="alert" style="display:none;">
+        Действие выполнено!
+    </div>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
         <script

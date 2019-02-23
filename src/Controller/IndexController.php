@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 //use Symfony\Component\Form\Exception\Core\Type\TextareaType;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\DBAL\DriverManager as DriverManager;
 
 class IndexController extends Controller
 {
@@ -85,36 +86,32 @@ class IndexController extends Controller
      */
     public function edit(Request $request){
 
-        if ($request->isXMLHttpRequest()) {
+        $id = $request->get('edit_task_id');
 
-            $id = $request->get('task_name');
-            echo $id;
-            /*$entityManager = $this->getDoctrine()->getManager();
-            $task = $entityManager->getRepository(Task::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $task = $entityManager->getRepository(Task::class)->find($id);
 
-            $new_name = $request->get('task_name');
-            $new_description = $request->get('task_desc');
-            $new_status = $request->get('status');
-
-            if (!$task) {
-                throw $this->createNotFoundException(
-                    'No product found for id '.$id
-                );
-            }
-
-            $task->setName($new_name);
-            $task->setDescription($new_description);
-            $task->setStatus($new_status);
-            $entityManager->flush();
+        $new_name = $request->get('edit_task_name');
+        $new_description = $request->get('edit_task_description');
+        $new_status = $request->get('edit_sel');
 
 
-            return new JsonResponse( json_encode(array('id' => $id,'task' => $new_name,
-                    'task_desc' => $new_description, 'status'=> $new_status ),
-                JSON_UNESCAPED_UNICODE) );*/
+        $task->setName($new_name);
+        $task->setDescription($new_description);
+        $task->setStatus($new_status);
 
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+
+        if (!$task) {
+            throw $this->createNotFoundException(
+                'No task found for id '.$id
+            );
         }
-        die();
-        return new JsonResponse();
+        
+
+        return $this->redirectToRoute('index');
 
     }
 
