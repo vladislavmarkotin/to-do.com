@@ -49,12 +49,15 @@ function addRequest(){
 }
 
 $("#send").click(function (e){
+
+    location.reload(true)
     var task_name = $('#task-name').val();
     var task_description = $("#task-description").val();
 
     var add = new addRequest();
 
     add.init(task_name, task_description);
+
     e.preventDefault();
 });
 

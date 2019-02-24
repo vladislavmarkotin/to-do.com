@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use PhpParser\Error;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DomCrawler\Field\TextareaFormField;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Task;
@@ -21,9 +23,20 @@ class IndexController extends Controller
 
     private function checkStrings($arg){
             if ($arg){
-                $arg = trim($arg);
+                $arg = str_replace(" ", "", $arg);
             }
             return $arg;
+    }
+
+    private function deleteTags($str){
+        return strip_tags($str);
+    }
+
+    private function checkMaxSize(&$str, $length = 15){
+        if (strlen($str) > $length)
+            return false;
+
+        return true;
     }
 
     /**
@@ -65,6 +78,17 @@ class IndexController extends Controller
 
                 $task = new Task();
 
+                $task_name = $this->checkStrings($task_name);
+                $task_desc = $this->checkStrings($task_desc);
+
+                /* Check Strings */
+                $task_name = $this->deleteTags($task_name);
+                $task_desc = $this->deleteTags($task_desc);
+
+                if (!$this->checkMaxSize($task_name, 16) && ($this->checkMaxSize($task_desc, 128)))
+                    throw new Exception();
+                /* End of check*/
+
                 $task->setName($task_name);
 
                 $task->setDescription($task_desc);
@@ -102,10 +126,16 @@ class IndexController extends Controller
         $new_description = $request->get('edit_task_description');
         $new_status = $request->get('edit_sel');
 
+        //die(iconv_strlen($new_name));
+        if (! ( $this->checkMaxSize($new_name, 16) || ($this->checkMaxSize($new_description, 128)) ))
+            return $this->redirectToRoute('index');
 
         $new_name = $this->checkStrings($new_name);
         $new_description = $this->checkStrings($new_description);
-        //$new_status = $this->checkStrings($new_description);
+        $new_name = $this->deleteTags($new_name);
+        $new_description = $this->deleteTags($new_description);
+
+
 
         $task->setName($new_name);
         $task->setDescription($new_description);

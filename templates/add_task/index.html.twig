@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AddTaskController!{% endblock %}
+{% block title %}To Do List:!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,9 +9,6 @@
 </style>
 <div id="container">
 
-    <div class="alert alert-danger" role="alert" style="display:none;">
-        Запрос не прошел!
-    </div>
     <div class="bd-example">
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -27,11 +24,11 @@
                         <form method="post" action="add">
                             <div class="form-group">
                                 <label for="task-name" class="form-control-label">Task name:</label>
-                                <input name="task_name" type="text" class="form-control" id="task-name" value="task">
+                                <input name="task_name" maxlength="15" type="text" class="form-control" id="task-name" value="task">
                             </div>
                             <div class="form-group">
                                 <label for="description" class="form-control-label">Description:</label>
-                                <textarea class="form-control" name="task_description" id="task-description">Description
+                                <textarea class="form-control" maxlength="127" name="task_description" id="task-description">Description
                                 </textarea>
                             </div>
                             <div class="modal-footer">
@@ -65,11 +62,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit_task-name" class="form-control-label">Edit task name:</label>
-                                <input name="edit_task_name" type="text" class="form-control" id="edit_task-name" value="task">
+                                <input name="edit_task_name" type="text" maxlength="15" class="form-control" id="edit_task-name" value="task">
                             </div>
                             <div class="form-group">
                                 <label for="edit_description" class="form-control-label">Edit Description:</label>
-                                <textarea class="form-control" name="edit_task_description" id="edit_task-description">
+                                <textarea class="form-control" maxlength="127" name="edit_task_description" id="edit_task-description">
                                     Description
                                 </textarea>
                             </div>
@@ -123,9 +120,21 @@
 
                     </td>
                     <td>{{ task.description }}</td>
-                    <td>{{ task.status }}</td>
-                    <td><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal">
-                            Edit Task</button></td>
+                    <td>
+                        {{ task.status }}
+                    </td>
+                    {% if task.status < 1 %}
+                        <td>
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal">
+                                Edit Task
+                            </button>
+                        </td>
+                    {% else %}
+                        <td><button type="button" class="btn btn-secondary" data-toggle="modal"
+                                    data-target="#editModal" disabled>
+                                Edit Task</button></td>
+
+                    {% endif %}
                     <td><button type="submit" class="btn btn-danger">Delete Task</button></td>
 
             </tr>

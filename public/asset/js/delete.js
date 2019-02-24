@@ -46,17 +46,4 @@ $(document).ready(function (){
             delete_request.init(id);
     });
 
-
-
-
-    /*$.each($("td button:submit").click(function (elem){
-        //alert("Yeaaaa!"); //
-
-        var id = $(this).parent().parent().children().eq(0).html();
-        var task_name = $(this).parent().parent().children().eq(1).html();
-        var task_description = $(this).parent().parent().children().eq(2).html();
-        var task_status = $(this).parent().parent().children().eq(3).html();
-        //console.log(id); it works!
-
-    }));*/
 });

@@ -16,7 +16,7 @@ function editRequest(){
                 //$("#edit_status [value="+task_status +"]").attr("selected", "selected");
             })
             .fail(function (error){
-                $("#error").show();
+                //$("#error").show();
                 console.log("Fail!");
             });
     }
